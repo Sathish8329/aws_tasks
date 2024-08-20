@@ -1,2 +1,3 @@
 # aws_tasks
-Daily aws tasks from basics
+how to take ebs snapshot and add it to the instance
+
