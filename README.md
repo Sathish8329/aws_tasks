@@ -1,3 +1,4 @@
+
 commands
 sudo apt update
 #shows all the disks
