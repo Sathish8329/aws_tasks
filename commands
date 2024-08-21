@@ -1,0 +1,72 @@
+1. Update the Package List
+bash
+Copy code
+sudo apt update
+2. List All Disks
+bash
+Copy code
+sudo fdisk -l
+This command lists all the disks available on the system.
+
+3. Partition the Disk
+bash
+Copy code
+sudo fdisk /dev/xvdf
+m: Display help.
+n: Create a new partition.
+p: Select a primary partition.
+1: Choose partition number 1.
+Enter: Accept the default values to use the entire disk size or specify a size (e.g., +7G).
+w: Write changes and exit.
+4. Verify the Partition
+bash
+Copy code
+sudo fdisk -l
+5. Format the Partition
+bash
+Copy code
+# This command shows available file system types
+mkfs
+
+# Format the partition with ext4
+sudo mkfs.ext4 /dev/xvdf1
+6. Prepare the Directory for Mounting
+bash
+Copy code
+# Create a backup directory
+mkdir /tmp/matomo-backup
+
+# Move existing files to the backup directory
+mv /root/matomo/* /tmp/matomo-backup/
+7. Temporarily Mount the Partition
+bash
+Copy code
+# Mount the partition temporarily
+sudo mount /dev/xvdf1 /root/matomo/
+
+# Verify the mount
+df -h
+8. Unmount the Partition
+bash
+Copy code
+sudo umount /dev/xvdf1
+9. Permanently Mount the Partition
+Edit the /etc/fstab file to ensure that the partition is mounted automatically at boot:
+
+bash
+Copy code
+sudo vi /etc/fstab
+Add the following line to the file:
+
+bash
+Copy code
+/dev/xvdf1  /root/matomo/  ext4  defaults  0  0
+10. Mount All Filesystems Defined in /etc/fstab
+bash
+Copy code
+sudo mount -a
+11. Verify the Mount
+bash
+Copy code
+df -h
+This will confirm that the partition is mounted correctly.
