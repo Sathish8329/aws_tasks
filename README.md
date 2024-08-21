@@ -1,38 +1,21 @@
+Amazon CloudWatch is a monitoring and management service for AWS resources and applications. Here's a simple summary of its key features:
 
-commands
-sudo apt update
-#shows all the disks
-sudo fdisk -l
-#the disk will be partitioned with few questions
-sudo fdisk /dev/xvdf
-You will be prompted with options. Use the following commands:
-m: Display help.
-n: Create a new partition.
-p: Select a primary partition.
-1: Choose partition number 1.
-Enter: Accept the default values to use the entire disk size or specify a size (e.g., +7G).
-w: Write changes and exit.
+Metrics Collection:
 
-sudo fdisk -l
-#this command will show all the extentions
-#type mkfs and give tab 2 times
-mkfs
-#select the extension either ext4 or xfs, we have selected ext4 here
-sudo mkfs.ext4 /dev/xvdf1
-#creating directory and moving it
-mkdir /tmp/matomo-backup
-mv /root/matomo/* /tmp/matomo-backup/
-#this is temporary mount command
-sudo mount /dev/xvdf1 /root/matomo/
-df -h
-#command to unmounth
-sudo umount /dev/xvdf1
+CloudWatch gathers metrics from AWS services like EC2 instances, RDS databases, and Lambda functions. For example, it tracks CPU usage, disk I/O, and network traffic.
+Logs Management:
 
-######FOR PERMANENT MOUNT###
-sudo vi /etc/fstab
-/dev/xvdf1  /root/matomo/  ext4  defaults  0  0
+It collects and stores log data from your AWS services and applications. You can use CloudWatch Logs to analyze log files, troubleshoot issues, and set up log-based metrics.
+Alarms and Notifications:
 
-sudo mount -a
+You can set up CloudWatch Alarms to monitor specific metrics and trigger notifications or automated actions when certain thresholds are met. For instance, an alarm can alert you if CPU usage exceeds a specified limit.
+Dashboards:
 
-df -h
+CloudWatch provides customizable dashboards to visualize metrics and logs. You can create charts and graphs to monitor the performance of your applications and infrastructure in real-time.
+Automated Actions:
 
+Based on alarms and metrics, CloudWatch can automatically trigger actions such as scaling your EC2 instances or invoking Lambda functions to handle specific conditions.
+Container Insights:
+
+For containerized applications running on AWS (like EKS or ECS), CloudWatch can provide detailed insights into container performance, including metrics and logs from individual containers.
+By using CloudWatch, you can gain visibility into your AWS environment, respond to issues proactively, and ensure that your resources are running efficiently.

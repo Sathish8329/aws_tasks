@@ -1,0 +1,71 @@
+1. Install the stress Tool on Ubuntu
+First, you need to install the stress tool on your Ubuntu EC2 instance to simulate CPU load.
+
+bash
+Copy code
+# Update package lists
+sudo apt update
+
+# Install the stress tool
+sudo apt install stress -y
+2. Run the stress Command to Load the CPU
+Next, you can use the stress command to simulate a high CPU load on the EC2 instance. The following command will run a series of stress tests:
+
+bash
+Copy code
+# Run stress test with multiple intervals
+stress -c 4 -t 60 && sleep 60 && \
+stress -c 4 -t 60 && sleep 60 && \
+stress -c 4 -t 360 && sleep 60 && \
+stress -c 4 -t 460 && sleep 30 && \
+stress -c 4 -t 360 && sleep 60
+-c 4: Uses 4 CPU cores.
+-t 60: Runs the stress for 60 seconds.
+sleep 60: Pauses for 60 seconds between stress tests.
+Alternatively, you can run a stress test in the background using nohup:
+
+bash
+Copy code
+nohup stress -c 4 -t 300 &
+You can monitor the CPU usage in real-time using the top command:
+
+bash
+Copy code
+top
+3. Create a CloudWatch Alarm for High CPU Utilization
+Step 1: Access CloudWatch
+Go to the AWS Management Console.
+Navigate to CloudWatch.
+Step 2: Create an Alarm
+In the CloudWatch dashboard, select Alarms from the left-hand menu.
+Click on Create Alarm.
+Step 3: Select EC2 Metrics
+Choose Select metric.
+In the Browse tab, navigate to EC2 > Per-Instance Metrics.
+Locate and select your instance using the Instance ID.
+Choose the CPUUtilization metric.
+Step 4: Configure Alarm Conditions
+Set the Period to your preferred interval (e.g., 5 minutes).
+Under Conditions, choose Greater than or equal to.
+Set the Threshold to 60 (or your desired CPU utilization percentage).
+Step 5: Set Up Notifications
+Select Next to configure notifications.
+Under Notification, select an existing SNS topic or create a new one.
+To create a new SNS topic, give it a name and provide your email address for notifications.
+Click Next.
+Step 6: Name and Review the Alarm
+Give the alarm a descriptive name (e.g., Warning - High CPU - InstanceName - ApplicationName).
+Review your settings and click Create Alarm.
+4. Verify the Stress Test and Alarm
+To confirm that the stress test is working:
+
+Use the top command to check CPU usage on the instance.
+Monitor the CloudWatch metrics for the instance and see if the CPU utilization crosses the threshold you set.
+If it does, you should receive a notification via the SNS topic you configured.
+5. Cleanup
+After testing, you might want to stop the stress process and delete the CloudWatch alarm:
+
+Stop the stress process: Use kill followed by the process ID or pkill stress.
+Delete the alarm: In the CloudWatch console, navigate to Alarms, select your alarm, and delete it.
+Summary
+This guide covers installing the stress tool on an Ubuntu EC2 instance, running stress tests to load the CPU, setting up a CloudWatch alarm to monitor CPU utilization, and configuring notifications for high CPU usage. This process is useful for testing the performance of your EC2 instances and ensuring that you’re alerted when the CPU load exceeds your defined thresholds.
