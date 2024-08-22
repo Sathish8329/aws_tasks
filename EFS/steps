@@ -1,0 +1,97 @@
+AWS EFS Setup and Automatic Mounting Guide
+Step 1: Create a Security Group for EFS
+Log in to the AWS Management Console and navigate to the EC2 Dashboard.
+Create a Security Group:
+Go to Security Groups under Network & Security.
+Click Create Security Group.
+Name: EFS
+Description: Security group for EFS access
+Inbound Rules:
+Type: NFS
+Protocol: TCP
+Port Range: 2049
+Source: Select Custom and choose the security group associated with your EC2 instance or enter the instance IP.
+Click Create Security Group.
+Step 2: Create an EFS File System
+Navigate to the AWS EFS Console:
+Go to EFS under Storage.
+Create EFS:
+Click Create file system.
+Name: Enter a name such as tooplate-image.
+Customize: Keep the default settings or adjust as needed.
+Network:
+Select the VPC where your EC2 instance resides.
+Security Group: Choose the EFS security group created in Step 1.
+Click Next and then Create.
+Step 3: Create an Access Point for EFS
+Access Points:
+In the EFS console, click Access Points on the left sidebar.
+Click Create Access Point.
+Select EFS: Choose the EFS file system created in Step 2.
+Scroll down and click Create Access Point.
+Step 4: Install EFS Utilities on the EC2 Instance
+For Amazon Linux:
+
+bash
+Copy code
+sudo yum install -y amazon-efs-utils
+For Debian-Based Distributions (like Ubuntu):
+
+bash
+Copy code
+# Update package list and install dependencies
+sudo apt-get update
+sudo apt-get -y install git binutils rustc cargo pkg-config libssl-dev
+
+# Clone the EFS utilities repository
+git clone https://github.com/aws/efs-utils
+
+# Build and install the EFS utilities
+cd efs-utils
+./build-deb.sh
+sudo apt-get -y install ./build/amazon-efs-utils*deb
+Step 5: Configure Automatic Mounting
+Backup Existing Data:
+
+bash
+Copy code
+mkdir /tmp/image_backup
+mv /var/www/html/image/* /tmp/image_backup
+Update /etc/fstab for Automatic Mounting:
+
+Open the /etc/fstab file:
+bash
+Copy code
+sudo vi /etc/fstab
+Add the EFS mount entry:
+css
+Copy code
+fs-0fe37d28145c4f15e /var/www/html/img efs _netdev,tls,accesspoint=fsap-09d69acff7111add9 0 0
+Save and exit the editor (press Esc, type :wq, and press Enter).
+Mount the EFS:
+
+bash
+Copy code
+sudo mount -fav
+Expected Output:
+bash
+Copy code
+/                        : ignored
+/boot                    : already mounted
+/boot/efi                : already mounted
+mount: (hint) your fstab has been modified, but systemd still uses
+       the old version; use 'systemctl daemon-reload' to reload.
+/var/www/html/images     : successfully mounted
+Verify the Mount:
+
+bash
+Copy code
+df -h
+Ensure that /var/www/html/images is listed and correctly mounted.
+Troubleshooting
+Security Group Errors: If the mount fails, verify that the security group associated with the EFS allows NFS traffic from your EC2 instance.
+Systemd Daemon Reload: If you receive a hint to reload systemd, run:
+bash
+Copy code
+sudo systemctl daemon-reload
+This guide ensures a secure and efficient setup for mounting AWS EFS using an access point, including preparation, configuration, and verification steps.
