@@ -1,0 +1,15 @@
+EFS, or Elastic File System, is a service provided by Amazon Web Services (AWS). It's like a giant storage box in the cloud where multiple computers can save, access, and share files at the same time.
+
+Here are a few key points about EFS:
+
+Scalable: EFS automatically grows or shrinks as you add or remove files, so you don't have to worry about running out of space.
+Shared Access: Multiple computers (or servers) can access the same files stored in EFS at the same time, making it easy for teams to collaborate.
+Reliable and Secure: AWS ensures that your data in EFS is stored safely, with built-in backups and security features.
+In simple terms, EFS is like a shared folder in the cloud that many people can use together, and it can grow as big as you need it to be.
+
+For better understanding
+Imagine you have a big box of toys that you and your friends want to play with. But instead of everyone having their own separate box, you all share one big box so everyone can play with the same toys.
+
+In the world of computers, sometimes lots of computers (like your friends) need to share the same information or files (like the toys). AWS EFS, or Elastic File System, is like that big box. It's a place where many computers can store and share files together at the same time.
+
+EFS is special because it can grow as big as you need it to be, just like adding more toys to the box when you get new ones. And it’s always available, so any computer connected to it can use it whenever they want, just like how you can take a toy out of the box whenever you feel like playing.
