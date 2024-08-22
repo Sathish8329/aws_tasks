@@ -1,0 +1,21 @@
+AWS Auto Scaling is a service that automatically adjusts the number of Amazon EC2 instances in a group according to the demand, ensuring your applications have the right amount of resources available to handle the current load. It helps maintain application performance and availability while optimizing costs.
+
+Key Components of AWS Auto Scaling
+Auto Scaling Groups (ASGs):
+
+Definition: A collection of EC2 instances that are managed as a group. An Auto Scaling group allows you to scale your instance count up or down based on defined policies.
+Configuration: Includes settings for the minimum and maximum number of instances, desired capacity, and scaling policies.
+Scaling Policies:
+
+Dynamic Scaling: Automatically adjusts the number of instances based on metrics such as CPU utilization or network traffic.
+Scheduled Scaling: Adjusts the number of instances based on a scheduled time, useful for predictable changes in demand.
+Launch Configurations / Launch Templates:
+
+Launch Configuration: Defines the configuration of EC2 instances that the Auto Scaling group will use, including instance type, AMI, and key pairs.
+Launch Template: A more flexible way to define instance configurations, supporting versioning and additional features.
+Scaling Metrics:
+
+Metrics from Amazon CloudWatch (e.g., CPU utilization, disk I/O) are used to trigger scaling actions based on predefined thresholds.
+Scaling Actions:
+
+Actions are taken based on the scaling policies. For example, adding or removing instances from the ASG to match the current demand.

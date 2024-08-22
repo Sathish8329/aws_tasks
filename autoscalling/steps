@@ -1,0 +1,81 @@
+Step 1: Create a Target Group
+Go to the EC2 Dashboard:
+
+Navigate to the EC2 service in the AWS Management Console.
+In the left-hand menu, under "Load Balancing," click on "Target Groups."
+Create Target Group:
+
+Click "Create target group."
+Select the "Instances" target type.
+Choose the protocol (e.g., HTTP) and port (e.g., 80) for your application.
+Under "VPC," select the VPC where your instances are located.
+Click "Next."
+Register the instances you want to include in this target group or leave it empty for now if you're setting up auto-scaling later.
+Configure health checks (e.g., HTTP, path /) to monitor your application's health.
+Click "Create target group."
+Step 2: Create a Load Balancer
+Go to Load Balancers:
+
+In the EC2 Dashboard, under "Load Balancing," click on "Load Balancers."
+Create Load Balancer:
+
+Click "Create Load Balancer" and choose "Application Load Balancer."
+Give your load balancer a name.
+Choose the scheme (Internet-facing or Internal) based on your requirements.
+Select the appropriate VPC and at least two subnets (preferably in different availability zones).
+Configure the security groups to allow traffic to the load balancer.
+Choose the listener (e.g., HTTP) and assign it to your previously created target group.
+Click "Create load balancer."
+Step 3: Create Auto Scaling Group
+Go to Auto Scaling:
+
+In the EC2 Dashboard, click on "Auto Scaling Groups" under "Auto Scaling."
+Create Auto Scaling Group:
+
+Click "Create Auto Scaling group."
+Choose "Launch template" and select an existing launch template or create a new one.
+Click "Next."
+Select VPC and Subnets:
+
+Choose the appropriate VPC.
+Select at least two subnets (all subnets if possible) to ensure high availability.
+Click "Next."
+Attach Load Balancer (Optional but recommended for web applications):
+
+Attach the load balancer created earlier.
+Select the load balancer and target group.
+Enable "ELB health checks" to ensure the target group checks the health of your application.
+Click "Next."
+Configure Auto Scaling Settings:
+
+Desired Capacity: Set to 2 (number of instances you want running at all times).
+Minimum Capacity: Set to 1 (the minimum number of instances that must always be running).
+Maximum Capacity: Set to 4 (the maximum number of instances that can be launched).
+Set Scaling Policies:
+
+Choose "Target tracking policy."
+For "Metric type," select "Average CPU utilization."
+Set the "Target value" to 50 (scale out when the average CPU usage exceeds 50%).
+Do not disable scale-in; let the system manage both scale-out and scale-in policies.
+Click "Next."
+Configure Notifications (Optional):
+
+Add notifications to an SNS topic if you want to be notified about scaling events.
+Click "Next."
+Add Tags:
+
+Tag your instances with a name (e.g., "webserver") to easily identify them.
+Click "Next."
+Review and Create:
+
+Review all the settings you have configured.
+Click "Create Auto Scaling group."
+Completion
+Your Auto Scaling group is now set up with the desired, minimum, and maximum capacity configurations. The load balancer will distribute incoming traffic to the instances, and the Auto Scaling group will adjust the number of running instances based on the CPU utilization or other metrics you set.
+
+
+
+
+
+
+
