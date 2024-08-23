@@ -1,0 +1,61 @@
+Step 1: Create an S3 Bucket
+Login to AWS Management Console:
+
+Navigate to the AWS Management Console.
+Open S3 Service:
+
+In the search bar, type “S3” and select it from the drop-down list.
+Create a New Bucket:
+
+Click on the “Create bucket” button.
+Configure Bucket Settings:
+
+Bucket Name: Enter a unique name for your bucket. Bucket names must be globally unique across all AWS accounts.
+Region: Choose the AWS region where you want to create the bucket.
+Object Ownership: By default, the ACLs (Access Control Lists) will be disabled to prevent public access. You can enable ACLs later if needed.
+Block Public Access Settings: Leave this enabled for now to prevent public access to the bucket and its objects by default.
+Bucket Versioning: Enable versioning to keep multiple versions of an object in the bucket. This helps recover from accidental deletions or overwrites.
+Configure Bucket Properties:
+
+Storage Class: By default, the storage class will be set to "S3 Standard." You can change this based on your needs (e.g., S3 Intelligent-Tiering, S3 Standard-IA, etc.).
+Create Bucket:
+
+Click on the “Create bucket” button at the bottom of the page. Your bucket will be created.
+Step 2: Upload Files to the Bucket
+Open the Bucket:
+
+Click on your newly created bucket to open it.
+Upload Objects:
+
+Click on the “Upload” button.
+Drag and drop files or folders from your desktop, or click “Add files” to select files from your computer.
+Click “Upload” to add the files to your bucket.
+Step 3: Explore Bucket and Object Options
+Bucket Overview: Explore various options like properties, permissions, and management settings available for the bucket.
+Object Properties: Click on an object and view its properties, metadata, and permissions. The “Object URL” displayed here is the public DNS of the object, but it won't be accessible publicly yet.
+Step 4: Make an Object Public Using ACL
+Enable ACL for the Object:
+
+Select the object you want to make public.
+Go to the “Permissions” tab.
+Under “Object Ownership,” click “Edit.”
+Enable “ACL (Access Control List)” by acknowledging and saving changes.
+Make Object Public:
+
+Select the object, click “Actions” in the top-right corner, and scroll down to “Make public using ACL.”
+If the option fails, proceed to Step 5.
+Step 5: Adjust Bucket Permissions for Public Access
+Edit Bucket Permissions:
+
+Go back to the main bucket page and click on the “Permissions” tab.
+Under “Block Public Access,” click “Edit.”
+Uncheck the settings that block public access (e.g., “Block all public access”).
+Save changes and confirm the prompt.
+Retry Making the Object Public:
+
+Now that the bucket allows public access, go back to the object, select it, and make it public using ACL again.
+Step 6: Access the Object Publicly
+Once the object is made public using ACL, you can access it using the “Object URL” from the properties section. Enter the URL in your browser to view the object.
+Note:
+Even after enabling public access at the bucket level, you must make each object public individually using ACL. Every newly added object will require this step to be accessible publicly.
+This process provides a controlled way of making specific objects in your S3 bucket publicly accessible while keeping the rest private.
