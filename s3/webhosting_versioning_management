@@ -1,0 +1,52 @@
+Title: Hosting a Static Website on AWS S3 with Versioning, Access Logs, and Lifecycle Management
+Introduction
+Overview: Highlighting the ease and cost-effectiveness of hosting static websites on Amazon S3.
+Prerequisites: An AWS account and basic knowledge of S3.
+Step 1: Downloading the Source Code
+Selecting a Template: Go to Tooplate.com, choose a website template, and download the source code.
+Unzipping the File: Extract the downloaded ZIP file to your local machine.
+Step 2: Creating S3 Buckets
+Create the Main Bucket:
+Name: toobarista (Bucket names must be globally unique).
+Versioning: Enable versioning to protect against accidental deletions and to keep track of file changes.
+Upload Files: Upload the unzipped files to this bucket.
+Create the Logging Bucket:
+Name: toobarista-logs.
+Purpose: Store server access logs for tracking and auditing.
+Step 3: Making Objects Public
+Enable Public Access:
+ACL Settings: Enable ACL and disable the "Block all public access" setting.
+Make Objects Public: Select all objects, choose Actions, scroll down, and make them public using ACL.
+Verify Public Access:
+Access URL: Check the object URLs to ensure they are publicly accessible.
+Step 4: Setting Up Static Website Hosting
+Enable Static Website Hosting:
+Properties: Go to the Properties tab in the main bucket.
+Configuration: Scroll down to Static website hosting, enable it, and specify index.html and error.html (even if you don't have an error.html file).
+Access URL: Get the website URL provided by AWS.
+Step 5: Enabling Server Access Logs
+Enable Access Logs:
+Properties: In the main bucket, scroll to Server access logging.
+Configuration: Enable it and select the toobarista-logs bucket as the destination.
+Step 6: Understanding and Using Versioning
+Enable and Use Versioning:
+Show Versions: Enable the "Show versions" option to see all versions of your files.
+Restore or Delete Versions: Learn how to restore previous versions or delete specific versions permanently.
+Overwrite Files: Upload a new version of a file (e.g., index.html) and see how it appears.
+Step 7: Managing S3 Lifecycle Policies
+Create a Lifecycle Rule:
+Rule Name: costeffective.
+Apply to All Objects: Set rules for both versioned and non-versioned objects.
+Storage Class Transitions: Transition from Standard to IA, Glacier, and Deep Glacier based on the age of the objects.
+Expiration: Set expiration dates for old objects to save costs.
+Incomplete Uploads: Set rules to clean up incomplete multipart uploads after a specific period.
+Step 8: Disaster Recovery with S3 Replication
+Set Up Cross-Region Replication:
+Destination Bucket: Create a new bucket in another region.
+Replication Rule: Set up replication to the destination bucket, enabling versioning in both buckets.
+IAM Role: Create the necessary IAM role for replication.
+Choose Storage Class: Opt for a cost-effective storage class like OneZone-IA in the destination bucket.
+Conclusion
+Review: Summarize the steps, emphasizing the benefits of using S3 for hosting static websites with features like versioning, access logs, lifecycle management, and disaster recovery.
+Next Steps: Encourage readers to explore more advanced features of AWS S3 and consider using CloudFront for CDN integration.
+This structured approach will help you create a clear and comprehensive Medium blog post on hosting a static website using AWS S3.
