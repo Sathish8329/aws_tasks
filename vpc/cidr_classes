@@ -1,0 +1,26 @@
+private IP range and classes
+
+class A .- 10.0.0.0 - 10.255.255.255
+class b - 172.16.0.0 - 172.31.255.255
+class c - 192.168.0.0 - 192.168.255.255
+
+subnet mask
+255.0.0.0 - in cidr /8
+255.255.0.0 - in cidr /16
+255.255.255.0 - in cidr /24
+
+eg
+172.16.2.125
+255.255.255.0
+
+172.16.2.0 - networkip
+172.16.2.1
+172.16.2.2
+172.16.2.3
+.
+.
+172.16.2.254
+172.16.2.255 - broadcast ip
+total ip - 256
+useable ip - 254
+resered ip - 2
