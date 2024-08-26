@@ -1,0 +1,92 @@
+Step 1: Create a VPC
+Navigate to VPC: Go to the AWS Management Console and open the VPC dashboard.
+Create a VPC: Click on "Create VPC."
+VPC Only: Choose this option.
+Name: Provide a name for your VPC.
+IPv4 CIDR Block: Enter 172.20.0.0/16 as the network range.
+Tenancy: Keep it as "Default."
+Tags: Add a tag if needed.
+Create: Click "Create" to create the VPC.
+Step 2: Create Subnets
+Create Subnets: Go to the "Subnets" section and click "Create Subnet."
+Select VPC: Choose the VPC you just created.
+Add Subnets:
+AZ 1a - Subnet 1: 172.20.1.0/24 (Public Subnet 1)
+AZ 1a - Subnet 2: 172.20.2.0/24 (Private Subnet 1)
+AZ 1b - Subnet 3: 172.20.3.0/24 (Public Subnet 2)
+AZ 1b - Subnet 4: 172.20.4.0/24 (Private Subnet 2)
+Create: Click "Create" to create the subnets.
+Step 3: Configure the Internet Gateway
+Create Internet Gateway: Go to "Internet Gateways" and click "Create Internet Gateway."
+Name: Provide a name.
+Attach Internet Gateway: Once created, select "Actions" -> "Attach to VPC" and choose the VPC you created.
+Step 4: Configure Route Tables for Public Subnets
+Default Route Table: The default route table is created automatically with the VPC.
+Create a Route Table:
+Name: Provide a name.
+VPC: Select your VPC.
+Associate Public Subnets:
+Go to "Subnet Associations."
+Edit and select the public subnets (Subnet 1 and Subnet 3).
+Save associations.
+Add Route:
+Destination: 0.0.0.0/0
+Target: Select the Internet Gateway you created.
+Save changes.
+Step 5: Enable Auto-Assign Public IP for Public Subnets
+Public Subnets: Go to "Subnets," select the public subnets.
+Auto-Assign IP Settings:
+Actions -> "Edit Subnet Settings"
+Enable "Auto-assign Public IPv4 Address."
+Save changes.
+Step 6: Configure NAT Gateway for Private Subnets
+Allocate Elastic IP:
+Go to "Elastic IPs."
+Click "Allocate Elastic IP" and give it a tag.
+Create NAT Gateway:
+Name: Provide a name.
+Subnet: Select one of the public subnets.
+Elastic IP: Select the allocated Elastic IP.
+Route Table for Private Subnets:
+Create a new route table, name it, and select your VPC.
+Go to "Subnet Associations" and select the private subnets (Subnet 2 and Subnet 4).
+Add Route:
+Destination: 0.0.0.0/0
+Target: Select the NAT Gateway.
+Save changes.
+Step 7: Enable DNS Hostnames for VPC
+DNS Settings:
+Go to "VPC," select your VPC.
+Actions -> "Edit VPC Settings"
+Enable "DNS Hostnames."
+Save changes.
+Step 8: Set Up a Bastion Host (Jump Server)
+Create Security Group:
+Go to "Security Groups" and create a new SG named "JumpServer."
+Inbound Rule: Allow SSH (port 22) from your IP.
+Create Bastion Host:
+Go to "EC2" and launch a new instance.
+Choose an AMI (Ubuntu or any preferred one).
+Select the public subnet and the JumpServer security group.
+Create a new key pair and save it securely.
+Launch the instance.
+SSH into Bastion Host:
+Use the key pair to SSH into the Bastion Host from your local machine.
+Step 9: SSH into Private Instance via Bastion Host
+Create Web Server in Private Subnet:
+Create a new instance in the private subnet.
+Use the appropriate security group allowing SSH from the Bastion Host.
+SSH into the private instance from the Bastion Host.
+Step 10: Set Up an Application Load Balancer
+Create Target Group:
+Go to "Target Groups" and create a new group.
+Select the VPC and add the private instance to the target group.
+Create Security Group for Load Balancer:
+Allow HTTP (port 80) from anywhere (both IPv4 and IPv6).
+Create Application Load Balancer:
+Go to "Load Balancers" and create an ALB.
+Choose the public subnets.
+Attach the security group created for the ALB.
+Configure routing to the target group.
+Access Web Application:
+After the ALB is active, get the DNS name and access it in a browser.
