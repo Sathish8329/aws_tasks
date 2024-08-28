@@ -1,0 +1,29 @@
+Create an AMI (Amazon Machine Image) from an EC2 Instance:
+
+Go to your EC2 instance.
+Click on "Actions," then "Image and templates," and choose "Create image."
+Provide a name and tag for your image, then click "Create image."
+The AMI can be used to launch instances in different regions, share with other AWS accounts, or serve as a backup.
+Launch an Instance Using the AMI:
+
+You can either launch a new instance directly from the AMI or create a launch template for easier future use.
+To create a launch template, go to "Launch template," select "Create template," choose the AMI, give it a name and tag, and click "Create template."
+To launch an instance from the template, select the template, click "Launch instance from template," make any necessary configuration changes, and remember to update the tag for easy identification.
+Set Up a Target Group:
+
+Go to the Load Balancers section and create a target group. A target group is a collection of instances that will receive traffic.
+Select "Instance" as the target type, give your target group a name, and set it to use HTTP on port 80.
+Configure health check settings and select the VPC where your instances are located.
+Add the instances you want to include in the target group.
+Create an Application Load Balancer (ALB):
+
+Go to the Load Balancer section and select "Create load balancer," then choose "Application Load Balancer."
+Name your load balancer, create a security group, and select all availability zones (AZs).
+Set the listener port to 80 and associate it with the target group you just created.
+After creating the load balancer, ensure your instance's security group allows traffic on port 80 from the load balancer's security group.
+Access the Website via Load Balancer:
+
+You can now access your website using the DNS name provided by the load balancer.
+Cleanup Process:
+
+To clean up, delete the load balancer first, then the target group, and finally the instances.
