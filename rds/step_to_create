@@ -1,0 +1,146 @@
+Setting Up an AWS RDS MySQL Database and Connecting from EC2: A Practical Guide
+
+Step-by-Step Guide
+1. Create an RDS Database
+Log in to AWS Management Console:
+
+Go to the RDS Dashboard.
+Create a New Database:
+
+Click on "Create database".
+Select Database Creation Method:
+
+Choose "Standard create".
+Choose Engine Type:
+
+Select "MySQL".
+Choose version 5.7.22.
+Specify Database Details:
+
+DB Instance Class:
+For development/testing: Choose t3.micro (Free Tier eligible).
+For production: Choose a suitable class with multiple AZs and good IOPS.
+Multi-AZ Deployment:
+Select "No" for demo purposes (single AZ), but choose "Yes" for production.
+Set Up Database Instance:
+
+DB Instance Identifier: Enter a name for the RDS instance.
+Master Username: Set as admin.
+Master Password: Choose "Autogenerate" or manually set a password. Save it securely.
+Storage:
+
+Select "General Purpose (SSD)".
+Set "Allocated Storage" to 20 GB.
+Public Accessibility:
+
+Set to "No" (recommended for security).
+Security Group:
+
+Select an existing security group or create a new one that allows access from your EC2 instance.
+Database Configuration:
+
+Database Name: Enter a name like accounts.
+Backup:
+
+Enable backups with a retention period of 7 days.
+Set the backup window as per your requirement.
+Optionally enable backup replication for disaster recovery.
+Monitoring:
+
+Set the granularity as default.
+Logs:
+
+Enable logging to CloudWatch as needed.
+Maintenance:
+
+Enable automatic maintenance.
+Delete Protection:
+
+Enable delete protection to prevent accidental deletion.
+Review and Create:
+
+[OReview the configuration and click "Create database".
+Save Database Credentials:
+
+Note down the database endpoint, username, and password for future use.
+2. Launch an EC2 Instance
+Go to EC2 Dashboard:
+
+Launch a new EC2 instance.
+Select AMI and Instance Type:
+
+Choose an appropriate AMI and instance type (e.g., t3.micro).
+Configure Instance:
+
+Ensure the instance is in the same VPC and region as the RDS instance.
+Configure Security Group:
+
+Open port 22 for SSH access from your IP address.
+Launch Instance:
+
+Complete the instance setup and launch it.
+3. Connect to the RDS Database from EC2
+SSH into EC2 Instance:
+
+Use the following command to SSH into the instance:
+bash
+Copy code
+ssh -i <your-key.pem> ec2-user@<ec2-instance-public-ip>
+Install MySQL Client:
+
+Run:
+bash
+Copy code
+sudo apt update
+sudo apt install mysql-client
+Test Connectivity to RDS:
+
+Test with telnet:
+bash
+Copy code
+telnet <rds-endpoint> 3306
+Connect to MySQL Database:
+
+Use the MySQL client to connect:
+bash
+Copy code
+mysql -h <rds-endpoint> -u admin -p
+Enter the password when prompted.
+Modify Security Group for RDS:
+
+Go to the RDS security group and add a rule to allow inbound traffic on port 3306 from the EC2 instance security group.
+4. Configure Database Parameter Group
+Create Parameter Group:
+
+Go to the RDS Dashboard.
+Select "Parameter groups".
+Click "Create parameter group".
+Enter a name and description, then click "Create".
+Modify Parameter Group:
+
+Select your new parameter group.
+Modify parameters as needed.
+Apply Parameter Group:
+
+Go to your RDS instance.
+Select "Modify".
+Scroll down and choose the new parameter group.
+Click "Continue" and apply the changes.
+5. Validate Configuration
+Check Connection:
+
+Log in to the RDS instance and run SQL commands to validate.
+Test Functionality:
+
+Verify that your application can connect to and interact with the database.
+Summary
+This guide outlines the steps to set up an RDS instance, connect to it from an EC2 instance, and configure parameters. Adjust security and access settings based on your specific needs and ensure to secure your database and instance appropriately.
+
+
+
+
+
+
+
+
+
