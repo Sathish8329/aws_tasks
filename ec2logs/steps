@@ -1,0 +1,121 @@
+
+Step-by-Step Guide: Monitoring EC2 Instance Logs in CloudWatch and Archiving to S3
+1. Create an IAM Role for EC2 with Required Permissions
+Service: Select "EC2" as the service that will use this role.
+Permissions: Attach the following policies:
+AmazonS3FullAccess - For access to S3.
+CloudWatchLogsFullAccess - For access to CloudWatch Logs.
+Role Name: Name the role, e.g., ec2logs-admin-role.
+Create Role: Complete the role creation.
+2. Attach the IAM Role to the EC2 Instance
+EC2 Console:
+Go to the EC2 Dashboard.
+Select the instance you want to monitor.
+Actions > Security > Modify IAM Role.
+Select the ec2logs-admin-role you created.
+Apply Changes.
+3. Verify IAM Role Attachment
+SSH into the Instance:
+Run the following command to verify S3 access:
+bash
+Copy code
+aws s3 ls
+This should list all S3 buckets in your account, confirming the role attachment.
+4. Install AWS Logs Agent on the EC2 Instance
+Install AWS Logs Agent:
+
+Run the following commands to install the awslogs package:
+bash
+Copy code
+sudo yum install -y awslogs
+Edit the AWS Logs Configuration:
+
+Open the configuration file:
+bash
+Copy code
+sudo vim /etc/awslogs/awslogs.conf
+Add or modify the following configuration block to capture Apache logs (for example):
+ini
+Copy code
+[var/log/httpd/access_log]
+datetime_format = %b %d %H:%M:%S
+file = /var/www/html/logfile
+buffer_duration = 5000
+log_stream_name = web-httpd-access
+initial_position = start_of_file
+log_group_name = your-log-group-name
+Note: Replace your-log-group-name with the desired CloudWatch Logs group name.
+Start and Enable AWS Logs:
+
+Restart and enable the AWS Logs service:
+bash
+Copy code
+sudo systemctl restart awslogsd
+sudo systemctl enable awslogsd
+5. Verify Log Streaming to CloudWatch
+CloudWatch Console:
+Go to Logs.
+Check if your logs are streaming under the log group you specified.
+6. Create a Metric Filter and Alarm in CloudWatch
+Metric Filter:
+
+Navigate to CloudWatch > Logs.
+Select the log group where your logs are being streamed.
+Create a new metric filter:
+Filter Pattern: Define a pattern to match specific log entries.
+Name: Provide a name for the metric filter.
+Metric Namespace: Define a namespace for organizing metrics.
+Metric Name: Provide a name for the metric.
+Metric Value: Set a value of 1.
+Save the filter.
+Create an Alarm:
+
+Navigate to CloudWatch > Alarms.
+Create a new alarm based on the metric filter:
+Select the metric filter you created.
+Configure the threshold, actions, and notifications.
+Create the alarm.
+7. Enable and Archive Load Balancer Logs to S3
+Create an ELB:
+Attach your EC2 instance to an Elastic Load Balancer (ELB).
+Enable Access Logs for ELB:
+Select your ELB in the EC2 Console.
+Scroll down to Access Logs.
+Enable Access Logs:
+Interval: Set it to 5 minutes.
+S3 Bucket Name: Provide the S3 bucket where logs should be stored.
+Configure Permissions:
+If denied access, add a bucket policy to your S3 bucket to allow ELB to write logs.
+The bucket policy can be obtained from AWS documentation for enabling ELB access logs.
+Example Bucket Policy:
+json
+Copy code
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "elasticloadbalancing.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::your-bucket-name/*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "your-account-id"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:elasticloadbalancing:region:account-id:loadbalancer/*"
+        }
+      }
+    }
+  ]
+}
+Replace your-bucket-name, your-account-id, and region accordingly.
+8. Review Logs and Metrics
+CloudWatch Console:
+Review logs streamed from EC2 and ELB.
+Check metrics and alarms to ensure they are functioning as expected.
+S3 Console:
+Verify that ELB logs are being archived in the specified S3 bucket.
+This comprehensive guide will help you monitor EC2 instance logs in CloudWatch, archive them to S3, and ensure your ELB access logs are properly configured and saved.
